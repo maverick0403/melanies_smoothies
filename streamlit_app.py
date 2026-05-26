@@ -1,6 +1,7 @@
 # Import python packages
 import streamlit as st
 import requests
+import pandas as pd
 #from snowflake.snowpark.context import get_active_session
 from snowflake.snowpark.functions import col,when_matched
 
@@ -27,6 +28,11 @@ session = cnx.session()
 #session = get_active_session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('fruit_name'),col('SEARCH_ON'))
 st.dataframe(data=my_dataframe, use_container_width=True)
+st.stop()
+
+#convert the snowpark df to pandas df so we can use tghe Loc function
+pd_df=my_dataframe.to_pandas()
+st.dataframe(pd_df)
 st.stop()
 
 fruit_list = st.multiselect(
